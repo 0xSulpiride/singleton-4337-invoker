@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 pragma solidity ^0.8.13;
 
-import { BaseInvoker } from "../src/BaseInvoker.sol";
+import { BaseInvoker } from "../src/3074/BaseInvoker.sol";
 import { Script } from "forge-std/Script.sol";
 
 contract Executor is Script {

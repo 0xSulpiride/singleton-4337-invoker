@@ -3,8 +3,8 @@ pragma solidity ^0.8.20;
 
 import { Test, console2 } from "forge-std/Test.sol";
 import { VmSafe } from "forge-std/Vm.sol";
-import { BatchInvoker } from "../src/BatchInvoker.sol";
-import { BaseInvoker } from "../src/BaseInvoker.sol";
+import { BatchInvoker } from "../src/3074/BatchInvoker.sol";
+import { BaseInvoker } from "../src/3074/BaseInvoker.sol";
 
 contract Callee {
     error UnexpectedSender(address expected, address actual);

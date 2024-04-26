@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import { Test, console2 } from "forge-std/Test.sol";
 import { VmSafe } from "forge-std/Vm.sol";
-import { Auth } from "../src/Auth.sol";
+import { Auth } from "../src/3074/Auth.sol";
 
 contract AuthHarness is Auth {
     function authHarness(address authority, bytes32 commit, uint8 v, bytes32 r, bytes32 s) external {
