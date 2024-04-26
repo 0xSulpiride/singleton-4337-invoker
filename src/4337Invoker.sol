@@ -11,7 +11,10 @@ import { Auth } from "./3074/Auth.sol";
 import { MultiSendAuthCallOnly } from "./3074/MultiSendAuthCallOnly.sol";
 
 /**
- * commit = nonce + calldata
+ * POC of 4337 singleton invoker
+ * https://notes.ethereum.org/@yoav/eip-3074-erc-4337-synergy#An-EIP-3074-invoker-as-the-ERC-4337-account-logic-of-an-EOA
+ * authority is stored in the first 192 bits of userop.nonce
+ * commit = user op hash
  */
 contract Singleton4337Invoker is IAccount, IAccountExecute, Auth, MultiSendAuthCallOnly {
     uint8 internal constant AUTHCALL_IDENTIFIER = 2;
