@@ -15,6 +15,9 @@ import { MultiSendAuthCallOnly } from "./3074/MultiSendAuthCallOnly.sol";
  * https://notes.ethereum.org/@yoav/eip-3074-erc-4337-synergy#An-EIP-3074-invoker-as-the-ERC-4337-account-logic-of-an-EOA
  * authority is stored in the first 192 bits of userop.nonce
  * commit = user op hash
+
+ * this should make more sense with a 3074-adjusted token paymaster
+ * because at the moment the invoker pays for userops from his funds.
  */
 contract Singleton4337Invoker is IAccount, IAccountExecute, Auth, MultiSendAuthCallOnly {
     uint8 internal constant AUTHCALL_IDENTIFIER = 2;
