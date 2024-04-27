@@ -1,6 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+/**
+ * POC of 4337 singleton invoker
+ * https://notes.ethereum.org/@yoav/eip-3074-erc-4337-synergy#An-EIP-3074-invoker-as-the-ERC-4337-account-logic-of-an-EOA
+ * authority is stored in the first 192 bits of userop.nonce
+ * commit = user op hash
+
+ * this should make more sense with a 3074-adjusted token paymaster
+ * because at the moment the invoker pays for userops from his funds.
+
+ * works with existing verifying signer
+ */
+
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { IEntryPoint } from "@account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import { IAccount } from "@account-abstraction/contracts/interfaces/IAccount.sol";
@@ -10,18 +22,7 @@ import { PackedUserOperation } from "@account-abstraction/contracts/interfaces/P
 import { Auth } from "./3074/Auth.sol";
 import { MultiSendAuthCallOnly } from "./3074/MultiSendAuthCallOnly.sol";
 
-/**
- * POC of 4337 singleton invoker
- * https://notes.ethereum.org/@yoav/eip-3074-erc-4337-synergy#An-EIP-3074-invoker-as-the-ERC-4337-account-logic-of-an-EOA
- * authority is stored in the first 192 bits of userop.nonce
- * commit = user op hash
-
- * this should make more sense with a 3074-adjusted token paymaster
- * because at the moment the invoker pays for userops from his funds.
- */
 contract Singleton4337Invoker is IAccount, IAccountExecute, Auth, MultiSendAuthCallOnly {
-    uint8 internal constant AUTHCALL_IDENTIFIER = 2;
-
     IEntryPoint private immutable _entryPoint;
 
     /**
@@ -32,6 +33,14 @@ contract Singleton4337Invoker is IAccount, IAccountExecute, Auth, MultiSendAuthC
     }
 
     receive() external payable {}
+
+    /**
+     * Add stake for this account.
+     * This is needed to allow this invoker to have more than 10 userop in mempool at once 
+     */
+    function addStake(uint32 unstakeDelaySec) external payable {
+        _entryPoint.addStake{value: msg.value}(unstakeDelaySec);
+    }
 
     constructor(IEntryPoint anEntryPoint) {
         _entryPoint = anEntryPoint;
