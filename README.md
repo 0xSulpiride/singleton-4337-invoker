@@ -1,4 +1,12 @@
-# `eip-3074-foundry`
+# An EIP-3074 invoker as the ERC-4337 account logic of an EOA
+
+Full description: https://notes.ethereum.org/@yoav/eip-3074-erc-4337-synergy#An-EIP-3074-invoker-as-the-ERC-4337-account-logic-of-an-EOA
+
+an EOA can generate a regular userOp with the only difference in these fields:\
+`userop.sender` = address(invoker)\
+`userop.nonce` = EOA || nonce. Can be fetched from `invoker.getNonce(EOA)`\
+`userop.signature` = EOA.sign(MAGIC || chain id || invoker || userOpHash)
+
 
 This repository contains patched versions of [`foundry`][foundry] & [the `solidity` compiler][solc], integrated with patches to [`revm`][revm] / [`ethers-rs`][ethers-rs], that support
 the [EIP-3074][eip-3074] opcodes (`AUTH` & `AUTHCALL`).
